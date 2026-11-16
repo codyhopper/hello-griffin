@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Griffin Lee Hopper — Now Shipping</title>
+<style>
+  :root{
+    /* Nursery palette — soft but AAA-contrast against paper/ink where it counts */
+    --ink:#25324B;          /* deep slate-navy, text */
+    --paper:#FBF7F0;        /* warm cream */
+    --paper-2:#F3ECDF;
+    --sky:#5B8DB8;          /* soft sky blue */
+    --clover:#4F8A6B;       /* sage green */
+    --peach:#E8845B;        /* warm peach accent */
+    --sun:#E7B84C;          /* buttery gold */
+    --line:#25324B;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:"Helvetica Neue",Arial,sans-serif;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:"SF Mono",Menlo,Consolas,monospace}
+
+  .skip{position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--paper);padding:.75rem 1.25rem;z-index:100;font-weight:700;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:4px solid var(--peach);outline-offset:3px;border-radius:2px}
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 1.5rem}
+
+  /* HERO — release banner */
+  header.hero{padding:5rem 0 3.5rem;text-align:center;position:relative;overflow:hidden}
+  #confetti{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+  .badge{
+    display:inline-flex;align-items:center;gap:.6rem;
+    background:var(--clover);color:var(--paper);
+    font-size:.8rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+    padding:.5rem 1rem;border-radius:999px;margin-bottom:2rem;
+  }
+  .badge .dot{width:.6rem;height:.6rem;border-radius:50%;background:var(--sun);
+    animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  @media(prefers-reduced-motion:reduce){.badge .dot{animation:none}}
+
+  .version{font-family:"SF Mono",Menlo,Consolas,monospace;color:var(--sky);font-size:1rem;letter-spacing:.1em;margin-bottom:1rem}
+  h1{font-size:clamp(2.8rem,10vw,6.5rem);line-height:.95;letter-spacing:-.03em;font-weight:800}
+  h1 .mid{color:var(--peach)}
+  .tagline{margin:1.75rem auto 0;max-width:44ch;font-size:clamp(1.1rem,2.5vw,1.4rem)}
+  .cta-row{margin-top:2.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+  .btn{font:inherit;font-weight:700;font-size:1.05rem;padding:1rem 1.75rem;border:3px solid var(--ink);background:var(--ink);color:var(--paper);border-radius:999px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.6rem;transition:transform .15s ease}
+  .btn:hover{transform:translateY(-3px)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--sun)}
+  @media(prefers-reduced-motion:reduce){.btn:hover{transform:none}}
+
+  section{padding:4rem 0;border-top:3px solid var(--ink)}
+  .label{font-size:.8rem;letter-spacing:.28em;text-transform:uppercase;font-weight:700;color:var(--clover);margin-bottom:1rem}
+  h2{font-size:clamp(1.8rem,5vw,2.8rem);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin-bottom:1.5rem;max-width:22ch}
+  .lead{font-size:1.2rem;max-width:60ch;margin-bottom:2rem}
+
+  /* Release notes / specs */
+  .specs{border:3px solid var(--ink);border-radius:18px;overflow:hidden;background:var(--paper)}
+  .spec-row{display:grid;grid-template-columns:1fr 1fr;border-bottom:2px solid var(--ink)}
+  .spec-row:last-child{border-bottom:none}
+  .spec-row dt{padding:1.1rem 1.5rem;font-weight:700;background:var(--paper-2);border-right:2px solid var(--ink);display:flex;align-items:center;gap:.6rem}
+  .spec-row dd{padding:1.1rem 1.5rem;font-family:"SF Mono",Menlo,Consolas,monospace;display:flex;align-items:center}
+  @media(max-width:560px){.spec-row{grid-template-columns:1fr}.spec-row dt{border-right:none;border-bottom:2px solid var(--ink)}}
+
+  /* Feature cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem}
+  .card{border:3px solid var(--ink);border-radius:18px;padding:1.75rem;background:var(--paper);transition:transform .18s ease}
+  .card:nth-child(1){box-shadow:8px 8px 0 var(--sky)}
+  .card:nth-child(2){box-shadow:8px 8px 0 var(--clover)}
+  .card:nth-child(3){box-shadow:8px 8px 0 var(--peach)}
+  .card:nth-child(4){box-shadow:8px 8px 0 var(--sun)}
+  .card:hover{transform:translate(-2px,-2px)}
+  @media(prefers-reduced-motion:reduce){.card:hover{transform:none}}
+  .card .chk{font-size:1.4rem;color:var(--clover);margin-bottom:.5rem;display:block}
+  .card h3{font-size:1.2rem;margin-bottom:.5rem}
+  .card p{font-size:1rem}
+
+  /* Design tokens */
+  .tokens{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem}
+  .token{border:2px solid var(--ink);border-radius:12px;overflow:hidden}
+  .token .swatch{height:80px}
+  .token .meta{padding:.75rem;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.8rem;background:var(--paper)}
+  .token .meta b{display:block;font-size:.9rem;margin-bottom:.15rem;font-family:"Helvetica Neue",Arial,sans-serif}
+
+  footer{background:var(--ink);color:var(--paper);padding:3.5rem 0;text-align:center}
+  footer p{max-width:52ch;margin:0 auto .75rem;font-size:1.1rem}
+  footer .sig{font-size:.9rem;opacity:.85;margin-top:1.5rem}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="hero">
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <p class="badge"><span class="dot" aria-hidden="true"></span>Status: Now Shipping</p>
+    <p class="version mono">release v1.0.0 · build "Hopper"</p>
+    <h1>Griffin <span class="mid">Lee</span> Hopper</h1>
+    <p class="tagline">After nine months in development, the Hopper family is proud to announce their most anticipated release yet. Zero bugs. Infinite charm.</p>
+    <div class="cta-row">
+      <button class="btn" id="celebrateBtn">🎉 Celebrate the launch</button>
+      <a class="btn ghost" href="#specs">View the release notes</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <!-- SPECS -->
+  <section id="specs" aria-labelledby="specs-h">
+    <div class="wrap">
+      <p class="label">Release notes · v1.0.0</p>
+      <h2 id="specs-h">The specs</h2>
+      <p class="lead">Fresh out of the build pipeline and passing every check. Here's what shipped.</p>
+      <dl class="specs">
+        <div class="spec-row"><dt>📦 Product name</dt><dd>Griffin Lee Hopper</dd></div>
+        <div class="spec-row"><dt>🏷️ Version</dt><dd>1.0.0 (first of many)</dd></div>
+        <div class="spec-row"><dt>📅 Release date</dt><dd>Shipped on schedule*</dd></div>
+        <div class="spec-row"><dt>⚖️ Package weight</dt><dd>[insert oz here] — small but mighty</dd></div>
+        <div class="spec-row"><dt>📏 Dimensions</dt><dd>[insert inches] of pure potential</dd></div>
+        <div class="spec-row"><dt>👨‍👩‍👦 Maintainer</dt><dd>The Hopper family, forever</dd></div>
+        <div class="spec-row"><dt>✅ Status</dt><dd>Stable. Extremely loved.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- A11Y FEATURES -->
+  <section aria-labelledby="a11y-h">
+    <div class="wrap">
+      <p class="label">Feature set</p>
+      <h2 id="a11y-h">Accessibility-first from birth</h2>
+      <p class="lead">Griffin's dad wrote the standards, so naturally this release ships fully compliant. A conformance report:</p>
+      <div class="grid">
+        <article class="card">
+          <span class="chk" aria-hidden="true">✓</span>
+          <h3>Perceivable</h3>
+          <p>Responds to touch, sound, and a familiar voice. High-contrast smile detected in early testing.</p>
+        </article>
+        <article class="card">
+          <span class="chk" aria-hidden="true">✓</span>
+          <h3>Operable</h3>
+          <p>Fully operable without a mouse. Grip strength: surprisingly strong. Nap navigation: still in beta.</p>
+        </article>
+        <article class="card">
+          <span class="chk" aria-hidden="true">✓</span>
+          <h3>Screen-reader ready</h3>
+          <p>Cries are 100% compatible with assistive listening at 3 a.m. Clear, expressive, impossible to ignore.</p>
+        </article>
+        <article class="card">
+          <span class="chk" aria-hidden="true">✓</span>
+          <h3>Robust</h3>
+          <p>Built to grow and adapt across every future platform. Backwards-compatible with unconditional love.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESIGN TOKENS -->
+  <section aria-labelledby="tokens-h">
+    <div class="wrap">
+      <p class="label">Design system</p>
+      <h2 id="tokens-h">The Griffin color tokens</h2>
+      <p class="lead">Every good release starts with the tokens. These shipped with him.</p>
+      <div class="tokens" role="list">
+        <div class="token" role="listitem">
+          <div class="swatch" style="background:var(--sky)"></div>
+          <div class="meta"><b>--tiny-socks</b>#5B8DB8</div>
+        </div>
+        <div class="token" role="listitem">
+          <div class="swatch" style="background:var(--clover)"></div>
+          <div class="meta"><b>--nursery-sage</b>#4F8A6B</div>
+        </div>
+        <div class="token" role="listitem">
+          <div class="swatch" style="background:var(--peach)"></div>
+          <div class="meta"><b>--cheek-blush</b>#E8845B</div>
+        </div>
+        <div class="token" role="listitem">
+          <div class="swatch" style="background:var(--sun)"></div>
+          <div class="meta"><b>--first-smile</b>#E7B84C</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHANGELOG -->
+  <section aria-labelledby="cl-h">
+    <div class="wrap">
+      <p class="label">Changelog</p>
+      <h2 id="cl-h">What's new in the Hopper household</h2>
+      <p class="lead" style="margin-bottom:1rem">✨ <b>Added:</b> One (1) tiny human. Enormous joy.</p>
+      <p class="lead" style="margin-bottom:1rem">🔊 <b>Added:</b> Ambient sound support, active 24/7.</p>
+      <p class="lead" style="margin-bottom:1rem">😴 <b>Deprecated:</b> Sleeping through the night. (Temporarily.)</p>
+      <p class="lead" style="margin-bottom:0">♾️ <b>Improved:</b> The definition of "worth it."</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Congratulations, Cody — from the whole team. The best thing you'll ever design didn't need a single spec review. 💙</p>
+    <p class="sig">*Release date, weight, and dimensions left as placeholders — send us the real numbers and we'll patch them in. This announcement ships with a skip link, AAA contrast, visible focus, live regions, and reduced-motion support. Naturally.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canvas=document.getElementById('confetti'),ctx=canvas.getContext('2d');
+  var pieces=[],colors=['#5B8DB8','#4F8A6B','#E8845B','#E7B84C'];
+  function size(){canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;}
+  size();window.addEventListener('resize',size);
+  function burst(n){for(var i=0;i<n;i++){pieces.push({x:Math.random()*canvas.width,y:-20,vx:(Math.random()-.5)*4,vy:Math.random()*3+2,r:Math.random()*7+4,c:colors[Math.floor(Math.random()*colors.length)],rot:Math.random()*Math.PI,vr:(Math.random()-.5)*.2});}}
+  function loop(){ctx.clearRect(0,0,canvas.width,canvas.height);for(var i=pieces.length-1;i>=0;i--){var p=pieces[i];p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.c;ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*.6);ctx.restore();if(p.y>canvas.height+20)pieces.splice(i,1);}requestAnimationFrame(loop);}
+  if(!reduce){burst(120);loop();}
+  document.getElementById('celebrateBtn').addEventListener('click',function(){
+    if(reduce){return;}
+    burst(150);
+  });
+})();
+</script>
+</body>
+</html>
